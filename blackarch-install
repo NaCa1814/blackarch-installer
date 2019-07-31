@@ -1581,7 +1581,7 @@ setup_extra_packages()
   feh git gpm haveged hdparm htop inotify-tools ipython irssi intel-ucode
   linux-atm lsof mercurial mesa mlocate moreutils mpv p7zip rsync
   rtorrent screen scrot smartmontools strace tmux udisks2 unace unrar
-  unzip upower usb_modeswitch zip zsh compton"
+  unzip upower usb_modeswitch zip zsh compton tilda"
 
   network="atftp bind-tools bridge-utils curl darkhttpd dhclient dialog
   dnscrypt-proxy dnsmasq dnsutils fwbuilder gnu-netcat ipw2100-fw ipw2200-fw iw
