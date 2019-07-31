@@ -1590,7 +1590,7 @@ setup_extra_packages()
 
   xorg="xf86-video-amdgpu xf86-video-ati xf86-video-dummy xf86-video-fbdev
   xf86-video-intel xf86-video-nouveau xf86-video-openchrome xf86-video-sisusb
-  xf86-video-vesa xf86-video-voodoo xorg-server xorg-xinit"
+  xf86-video-vesa xf86-video-voodoo xorg-server xorg-xinit conky"
 
   all="$arch $bluetooth $browser $editor $filesystem $fonts $hardware $kernel"
   all="$all $misc $network $xorg"
