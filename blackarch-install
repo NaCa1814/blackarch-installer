@@ -1427,7 +1427,7 @@ EOF
 
     uuid="$(lsblk -o UUID $ROOT_PART | sed -n 2p)"
 
-    if [ "$INSTALL_MODE" != "$INSTALL_LIVE_ISO" ]
+    if [ "$INSTALL_MODE" != "$INSTALL_REPO" ]
     then
       chroot $CHROOT pacman -S grub --noconfirm --overwrite='*' --needed \
         > $VERBOSE 2>&1
