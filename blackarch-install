@@ -137,12 +137,11 @@ CHROOT='/mnt'
 NORMAL_USER=''
 
 # default BlackArch Linux repository URL
-BA_REPO_URL='https://www.blackarch.org/blackarch/$repo/os/$arch'
+BA_REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/blackarch/$repo/os/$arch'
 
 # default ArchLinux repository URL
-AR_REPO_URL='https://archlinux.surlyjake.com/archlinux/$repo/os/$arch'
-AR_REPO_URL="$AR_REPO_URL http://mirrors.evowise.com/archlinux/\$repo/os/\$arch"
-AR_REPO_URL="$AR_REPO_URL http://mirror.rackspace.com/archlinux/\$repo/os/\$arch"
+AR_REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch'
+AR_REPO_URL="$AR_REPO_URL http://mirrors.163.com/archlinux/\$repo/os/\$arch"
 
 # X (display + window managers ) setup - default: false
 X_SETUP=$FALSE
@@ -1564,15 +1563,15 @@ setup_extra_packages()
 
   bluetooth="bluez bluez-hid2hci bluez-tools bluez-utils"
 
-  browser="chromium elinks firefox"
+  browser="chromium elinks"
 
-  editor="hexedit vim"
+  editor="hexedit vim gvim"
 
   filesystem="btrfs-progs cifs-utils dmraid dosfstools exfat-utils f2fs-tools
   gpart gptfdisk mtools nilfs-utils ntfs-3g partclone parted partimage"
 
   fonts="ttf-dejavu ttf-indic-otf ttf-liberation xorg-fonts-alias
-  xorg-fonts-misc"
+  xorg-fonts-misc wqy-zenhei wqy-microhei"
 
   hardware="amd-ucode intel-ucode"
 
@@ -1582,7 +1581,7 @@ setup_extra_packages()
   feh git gpm haveged hdparm htop inotify-tools ipython irssi intel-ucode
   linux-atm lsof mercurial mesa mlocate moreutils mpv p7zip rsync
   rtorrent screen scrot smartmontools strace tmux udisks2 unace unrar
-  unzip upower usb_modeswitch zip zsh"
+  unzip upower usb_modeswitch zip zsh compton"
 
   network="atftp bind-tools bridge-utils curl darkhttpd dhclient dialog
   dnscrypt-proxy dnsmasq dnsutils fwbuilder gnu-netcat ipw2100-fw ipw2200-fw iw
@@ -1591,7 +1590,7 @@ setup_extra_packages()
 
   xorg="xf86-video-amdgpu xf86-video-ati xf86-video-dummy xf86-video-fbdev
   xf86-video-intel xf86-video-nouveau xf86-video-openchrome xf86-video-sisusb
-  xf86-video-vesa xf86-video-voodoo xorg-server xorg-xinit xterm"
+  xf86-video-vesa xf86-video-voodoo xorg-server xorg-xinit"
 
   all="$arch $bluetooth $browser $editor $filesystem $fonts $hardware $kernel"
   all="$all $misc $network $xorg"
@@ -1870,21 +1869,15 @@ setup_display_manager()
 {
   title "BlackArch Linux Setup > Display Manager"
 
-  wprintf "[+] Setting up LXDM"
+  wprintf "[+] Setting up SDDM"
   printf "\n"
 
   # install lxdm packages
-  chroot $CHROOT pacman -S lxdm --needed --overwrite='*' --noconfirm \
+  chroot $CHROOT pacman -S SDDM --needed --overwrite='*' --noconfirm \
     > $VERBOSE 2>&1
 
-  # config files
-  cp -r "$BI_PATH/data/etc/lxdm/." "$CHROOT/etc/lxdm/."
-  cp -r "$BI_PATH/data/usr/share/lxdm/." "$CHROOT/usr/share/lxdm/."
-  cp -r "$BI_PATH/data/usr/share/xsessions" "$CHROOT/usr/share/xsessions"
-  cp -r "$BI_PATH/data/usr/share/gtk-2.0/." "$CHROOT/usr/share/gtk-2.0/."
-
   # enable in systemd
-  chroot $CHROOT systemctl enable lxdm > $VERBOSE 2>&1
+  chroot $CHROOT systemctl enable sddm.service > $VERBOSE 2>&1
 
   return $SUCCESS
 }
@@ -1907,9 +1900,10 @@ setup_window_managers()
   4. I3-wm
   5. Openbox
   6. Spectrwm
-  7. All of the above
+  7. KDE-plasma
+  8. All of the above
   \n"
-    wprintf "[?] Choose an option [7]: "
+    wprintf "[?] Choose an option [8]: "
     read choice
     echo
     case $choice in
@@ -1954,9 +1948,14 @@ setup_window_managers()
         cp -r "$BI_PATH/data/etc/spectrwm.conf" "$CHROOT/etc/spectrwm.conf"
         break
         ;;
+      7)
+        chroot $CHROOT pacman -S plasma kde-applications --needed --overwrite='*' --noconfirm \
+          > $VERBOSE 2>&1
+        break
+        ;;
       *)
         chroot $CHROOT pacman -S fluxbox openbox awesome i3-wm i3status \
-          i3lock dwm spectrwm --needed --overwrite='*' --noconfirm \
+          i3lock dwm spectrwm plasma kde-applications --needed --overwrite='*' --noconfirm \
           > $VERBOSE 2>&1
 
         # awesome
